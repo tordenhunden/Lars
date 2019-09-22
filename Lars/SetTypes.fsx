@@ -76,7 +76,33 @@ let matches =
   } |> Seq.toArray
 
 
+#load "Incom.Cols.fs"
+
+open Incom
+open System.IO
+
+let path = sprintf "%s/SalesJan2009.csv" __SOURCE_DIRECTORY__ 
+let content = File.ReadAllLines path
 
 
+let zs = 
+  content 
+  |> Array.map (fun x -> x.Split(';'))
+  |> Array.map (fun x -> {| TransactionDate  = x.[0]
+                            Product          = x.[1]
+                            Price            = x.[2]
+                            PaymentType      = x.[3]
+                            Name             = x.[4]
+                            City             = x.[5]
+                            State            = x.[6]
+                            Country          = x.[7]
+                            AccountCreated   = x.[8]
+                            LastLogin        = x.[9]
+                            Latitude         = x.[10]
+                            Longitude        = x.[11] |})
+  |> Array.filter (fun x -> x.PaymentType = "Visa")
+  |> Array.sortBy (fun x -> x.State)
+
+zs |> Cols.ofProperties true |> Cols.align 1000 |> Cols.print " | "
 
 
