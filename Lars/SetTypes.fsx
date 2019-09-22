@@ -81,7 +81,12 @@ let matches =
 open Incom
 open System.IO
 
-let path = sprintf "%s/SalesJan2009.csv" __SOURCE_DIRECTORY__ 
+
+
+
+[<Literal>]
+let path = __SOURCE_DIRECTORY__ + "/SalesJan2009.csv" 
+
 let content = File.ReadAllLines path
 
 
@@ -106,3 +111,18 @@ let zs =
 zs |> Cols.ofProperties true |> Cols.align 1000 |> Cols.print " | "
 
 
+
+
+
+
+//alternative
+type Csv = CsvProvider<path,Separators=";">
+
+let parsed = Csv.Load path
+let rows = 
+  parsed.Rows 
+  |> Seq.toArray 
+  |> Array.filter (fun x -> x.State = "NY")
+
+
+Cols.ofCsvTypeProviderRows parsed.Headers parsed.Rows |> Cols.align 1000 |> Cols.print " | "

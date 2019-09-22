@@ -57,6 +57,7 @@
     <None Include="SalesJan2009.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Lars.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
